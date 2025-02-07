@@ -3,8 +3,18 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 
-// Middleware
-app.use(cors());
+// CORS configuration
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173", // Local development URL
+      "https://backend-forms-fullstack.onrender.com/", // Your Vercel domain
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
 // Test route
