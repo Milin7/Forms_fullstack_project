@@ -21,7 +21,7 @@ app.use(express.json());
 
 // Test route
 app.get("/", (req: Request, res: Response) => {
-  res.json({ message: "Server is running" });
+  res.json({ message: "Server is running yes nop asf" });
 });
 
 // Server setup
