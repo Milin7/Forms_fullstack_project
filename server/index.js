@@ -7,8 +7,8 @@ const app = express();
 app.use(
   cors({
     origin: [
-      "http://localhost:5173", // Local development URL
-      "https://forms-fullstack-project.vercel.app/", // Vercel domain
+      "http://localhost:5173", // Development
+      "https://forms-fullstack-project.vercel.app", // Your Vercel domain (without trailing slash)
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     credentials: true,
@@ -19,7 +19,7 @@ app.use(express.json());
 
 // Test route
 app.get("/", (req, res) => {
-  res.json({ message: "Server is running yes" });
+  res.json({ message: "Server is running" });
 });
 
 // Server setup
