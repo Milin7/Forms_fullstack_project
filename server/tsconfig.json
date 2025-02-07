@@ -5,8 +5,8 @@
     "rootDir": "./src", // Where your TypeScript files are
 
     // Module Configuration
-    "target": "es6", // What version of JS to compile to
-    "module": "commonjs", // Module system to use
+    "target": "ES2022", // What version of JS to compile to
+    "module": "ESNext", // Module system to use
     "moduleResolution": "node", // How to resolve modules
 
     // Strict Type-Checking
@@ -22,6 +22,6 @@
     "noUnusedParameters": false, // Report errors on unused parameters
     "noImplicitReturns": true // Report error when not all code paths return
   },
-  "include": ["src/**/*.ts"], // Which files to compile
+  "include": ["src/**/*"], // Which files to compile
   "exclude": ["node_modules"] // Which files to skip
 }
