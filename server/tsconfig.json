@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    // Output & Input Configuration
+    "outDir": "./dist", // Where to put compiled files
+    "rootDir": "./src", // Where your TypeScript files are
+
+    // Module Configuration
+    "target": "es6", // What version of JS to compile to
+    "module": "commonjs", // Module system to use
+    "moduleResolution": "node", // How to resolve modules
+
+    // Strict Type-Checking
+    "strict": false, // Enable all strict type checking options
+
+    // Interop Constraints
+    "esModuleInterop": true, // Enables CommonJS/AMD/UMD modules to be imported
+    "skipLibCheck": true, // Skip type checking of declaration files
+    "forceConsistentCasingInFileNames": true, // Ensure consistent casing in file names
+
+    // Additional Checks
+    "noUnusedLocals": true, // Report errors on unused locals
+    "noUnusedParameters": true, // Report errors on unused parameters
+    "noImplicitReturns": true // Report error when not all code paths return
+  },
+  "include": ["src/**/*"], // Which files to compile
+  "exclude": ["node_modules"] // Which files to skip
+}

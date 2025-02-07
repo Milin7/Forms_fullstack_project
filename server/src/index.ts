@@ -1,14 +1,16 @@
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const app = express();
+import dotenv from "dotenv";
+import express, { Express, Request, Response } from "express";
+import cors from "cors";
+
+dotenv.config();
+const app: Express = express();
 
 // CORS configuration
 app.use(
   cors({
     origin: [
-      "http://localhost:5173", // Development
-      "https://forms-fullstack-project.vercel.app", // Your Vercel domain (without trailing slash)
+      "http://localhost:5173",
+      "https://forms-fullstack-project.vercel.app",
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     credentials: true,
@@ -18,7 +20,7 @@ app.use(
 app.use(express.json());
 
 // Test route
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.json({ message: "Server is running" });
 });
 
