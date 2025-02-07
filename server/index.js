@@ -8,7 +8,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173", // Local development URL
-      "https://backend-forms-fullstack.onrender.com/", // Your Vercel domain
+      "https://backend-forms-fullstack.onrender.com/", // Vercel domain
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     credentials: true,
