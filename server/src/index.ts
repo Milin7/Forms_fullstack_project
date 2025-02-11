@@ -1,10 +1,13 @@
 import dotenv from "dotenv";
 import express from "express";
-import type { Express, Request, Response } from "express";
 import cors from "cors";
+import { testConnection } from "./config/database";
+import { syncDatabase } from "./models";
+import userRoutes from "./routes/users";
+import authRoutes from "./routes/auth";
 
 dotenv.config();
-const app: Express = express();
+const app = express();
 
 // CORS configuration
 app.use(
@@ -20,13 +23,21 @@ app.use(
 
 app.use(express.json());
 
-// Test route
-app.get("/", (req: Request, res: Response) => {
-  res.json({ message: "Server is running yes nop asf" });
-});
+// Initialize database
+const initDatabase = async () => {
+  await testConnection();
+  await syncDatabase();
+};
 
-// Server setup
+initDatabase();
+
+// Routes
+app.use("/api/users", userRoutes);
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
