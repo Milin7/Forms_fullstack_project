@@ -6,7 +6,7 @@
 
     // Module Configuration
     "target": "ES2020", // What version of JS to compile to
-    "module": "CommonJS", // Module system to use
+    "module": "ESNext", // Module system to use
     "moduleResolution": "node", // How to resolve modules
 
     // Strict Type-Checking
