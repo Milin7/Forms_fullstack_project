@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
-import { testConnection } from "./config/database";
+import { testConnection } from "./config/database.js";
 import { syncDatabase } from "./models";
 import userRoutes from "./routes/users";
 import authRoutes from "./routes/auth";
