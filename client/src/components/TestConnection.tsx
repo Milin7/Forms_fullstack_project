@@ -10,6 +10,7 @@ export function TestConnection() {
       .get("/")
       .then(response => {
         setMessage(response.data.message);
+        console.log(response.data.message);
       })
       .catch(error => {
         console.error("Error:", error);

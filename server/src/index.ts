@@ -23,6 +23,11 @@ app.use(
 
 app.use(express.json());
 
+// Add this root route handler
+app.get("/", (req, res) => {
+  res.json({ message: "Server is running successfully!" });
+});
+
 // Initialize database
 const initDatabase = async () => {
   await testConnection();
