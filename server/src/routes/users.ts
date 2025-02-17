@@ -3,6 +3,7 @@ import { User } from "../models";
 import bcrypt from "bcrypt";
 import { auth } from "../middleware/auth";
 import { AuthRequest } from "../middleware/auth";
+import { checkRole } from "../middleware/checkRole";
 
 const router = Router();
 
@@ -68,5 +69,41 @@ router.get("/profile", auth, async (req: AuthRequest, res): Promise<any> => {
     res.status(500).json({ error: "Failed to fetch profile" });
   }
 });
+
+// Admin only - Get all users
+router.get(
+  "/admin/users",
+  auth,
+  checkRole(["admin"]),
+  async (req: AuthRequest, res): Promise<any> => {
+    try {
+      const users = await User.findAll({
+        attributes: { exclude: ["password"] },
+      });
+      res.json(users);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch users" });
+    }
+  }
+);
+
+// Admin only - Delete user
+router.delete(
+  "/admin/users/:id",
+  auth,
+  checkRole(["admin"]),
+  async (req: AuthRequest, res): Promise<any> => {
+    try {
+      const user = await User.findByPk(req.params.id);
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      await user.destroy();
+      res.json({ message: "User deleted successfully" });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to delete user" });
+    }
+  }
+);
 
 export default router;

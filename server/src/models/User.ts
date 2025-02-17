@@ -37,7 +37,7 @@ User.init(
       allowNull: false,
       validate: {
         notEmpty: true,
-        len: [6, 20], // Password minimum 6 characters
+        len: [6, 100],
       },
     },
     role: {

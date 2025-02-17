@@ -86,4 +86,72 @@ router.get("/me", auth, async (req: AuthRequest, res): Promise<any> => {
   }
 });
 
+// Request password reset
+router.post("/forgot-password", async (req, res): Promise<any> => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ where: { email } });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Generate reset token (valid for 1 hour)
+    const resetToken = jwt.sign(
+      { id: user.get("id") },
+      process.env.JWT_SECRET as string,
+      { expiresIn: "1h" }
+    );
+
+    // In a real app, send this via email
+    // For now, just return it
+    res.json({
+      message: "Password reset token generated",
+      resetToken,
+    });
+  } catch (error) {
+    res.status(400).json({ error: "Failed to generate reset token" });
+  }
+});
+
+// Reset password with token
+router.post("/reset-password", async (req, res): Promise<any> => {
+  try {
+    const { resetToken, newPassword } = req.body;
+    console.log(resetToken);
+    console.log("New password being set:", newPassword);
+
+    if (newPassword.length < 6 || newPassword.length > 20) {
+      return res
+        .status(400)
+        .json({ error: "Password must be between 6 and 20 characters long." });
+    }
+
+    // Verify reset token
+    const decoded = jwt.verify(
+      resetToken,
+      process.env.JWT_SECRET as string
+    ) as any;
+    const user = await User.findByPk(decoded.id);
+    console.log("Reset token:", resetToken);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Hash and update password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    await user.update({ password: hashedPassword });
+
+    res.json({ message: "Password reset successfully" });
+  } catch (error) {
+    if (error.name === "JsonWebTokenError") {
+      return res.status(401).json({ error: "Invalid or expired reset token" });
+    }
+    console.log(error);
+    res.status(400).json({ error: "Failed to reset password" });
+  }
+});
+
 export default router;
