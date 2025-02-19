@@ -5,7 +5,7 @@
     "rootDir": "./src", // Where your TypeScript files are
 
     // Module Configuration
-    "target": "ES2020", // What version of JS to compile to
+    "target": "es6", // What version of JS to compile to
     "module": "CommonJS", // Module system to use
     "moduleResolution": "node", // How to resolve modules
 
