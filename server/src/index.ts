@@ -5,6 +5,7 @@ import { testConnection } from "./config/database.js";
 import { syncDatabase } from "./models";
 import userRoutes from "./routes/users";
 import authRoutes from "./routes/auth";
+import templateRoutes from "./routes/templates";
 
 dotenv.config();
 const app = express();
@@ -34,11 +35,10 @@ initDatabase();
 
 // Routes
 app.use("/api/users", userRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/templates", templateRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-app.use("/api/auth", authRoutes);
-app.use("/api/users", userRoutes);
