@@ -13,11 +13,18 @@ router.post("/login", async (req, res): Promise<any> => {
     const { email, password } = req.body;
     console.log("Login attempt with:", { email, password });
 
+    if (!process.env.JWT_SECRET) {
+      throw new Error("JWT_SECRET is not configured");
+    }
+
     const user = await User.findOne({ where: { email } });
     if (!user) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
-
+    const loginUser = await User.findOne({
+      where: { email },
+      attributes: { exclude: ["password"] }, // Exclude password directly in the query
+    });
     const storedHash = user.get("password");
     console.log("Stored hash in DB:", storedHash);
     console.log("Attempting to compare:", password, "with stored hash");
@@ -31,11 +38,11 @@ router.post("/login", async (req, res): Promise<any> => {
 
     const token = jwt.sign(
       { id: user.get("id"), email: user.get("email"), role: user.get("role") },
-      process.env.JWT_SECRET as string,
+      process.env.JWT_SECRET,
       { expiresIn: "24h" }
     );
 
-    res.json({ token });
+    res.json({ token, user: loginUser });
   } catch (error) {
     console.error("Login error:", error);
     res.status(400).json({ error: "Login failed" });
