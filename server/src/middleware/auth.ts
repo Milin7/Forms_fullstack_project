@@ -7,12 +7,6 @@ export interface AuthRequest extends Request {
     email: string;
     role: string;
   };
-  headers: {
-    authorization?: string;
-    accept?: string;
-    host?: string;
-    connection?: string;
-  };
 }
 
 export const auth = async (
@@ -21,7 +15,7 @@ export const auth = async (
   next: NextFunction
 ) => {
   try {
-    const token = req.header("Authorization")?.replace("Bearer ", "");
+    const token = req.headers.authorization?.replace("Bearer ", "");
     if (!token) {
       throw new Error();
     }
