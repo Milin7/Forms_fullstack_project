@@ -2,7 +2,11 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
 export interface AuthRequest extends Request {
-  user?: any;
+  user?: {
+    id: number;
+    email: string;
+    role: string;
+  };
 }
 
 export const auth = async (
@@ -11,17 +15,13 @@ export const auth = async (
   next: NextFunction
 ) => {
   try {
-    const token = req.headers.authorization?.replace("Bearer ", "");
+    const token = req.header("Authorization")?.replace("Bearer ", "");
     if (!token) {
-      throw new Error();
+      throw new Error("No token provided");
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
-      id: number;
-      email: string;
-      role: string;
-    };
-    req.user = decoded;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+    req.user = decoded as any;
     next();
   } catch (error) {
     res.status(401).json({ error: "Authentication failed" });
