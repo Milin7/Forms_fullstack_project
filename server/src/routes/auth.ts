@@ -3,7 +3,6 @@ import { User, Session } from "../models";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { auth, AuthRequest } from "../middleware/auth";
-import { Op } from "sequelize";
 import { QueryTypes } from "sequelize";
 
 const router = express.Router();
