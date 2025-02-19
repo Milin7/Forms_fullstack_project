@@ -18,9 +18,14 @@ router.post("/login", async (req, res): Promise<any> => {
     }
 
     const user = await User.findOne({ where: { email } });
+    const loginUser = await User.findOne({
+      where: { email },
+      attributes: { exclude: ["password"] }, // Exclude password directly in the query
+    });
     if (!user) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
+
     const storedHash = user.get("password");
     console.log("Stored hash in DB:", storedHash);
     console.log("Attempting to compare:", password, "with stored hash");
@@ -38,7 +43,7 @@ router.post("/login", async (req, res): Promise<any> => {
       { expiresIn: "24h" }
     );
 
-    res.json({ token });
+    res.json({ token, loginUser });
   } catch (error) {
     console.error("Login error:", error);
     res.status(400).json({ error: "Login failed" });
