@@ -12,11 +12,11 @@ const app = express();
 // CORS configuration
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://forms-fullstack-project.vercel.app/",
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    origin:
+      process.env.NODE_ENV === "production"
+        ? "https://forms-fullstack-project.vercel.app"
+        : "http://localhost:5173",
+
     credentials: true,
   })
 );

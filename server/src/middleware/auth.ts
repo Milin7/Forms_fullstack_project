@@ -20,8 +20,12 @@ export const auth = async (
       throw new Error();
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-    req.user = decoded as any;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
+      id: number;
+      email: string;
+      role: string;
+    };
+    req.user = decoded;
     next();
   } catch (error) {
     res.status(401).json({ error: "Authentication failed" });

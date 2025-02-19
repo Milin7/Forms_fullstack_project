@@ -1,39 +1,54 @@
 import { useEffect, useState } from "react";
+
 import { useAuth } from "../context/AuthContext";
 
 interface UserProfile {
   email: string;
+
   role: string;
 }
 
 export const Dashboard = () => {
   const { token } = useAuth();
+
   const [profile, setProfile] = useState<UserProfile | null>(null);
+
   const [isEditing, setIsEditing] = useState(false);
+
   const [newEmail, setNewEmail] = useState("");
+
   const [message, setMessage] = useState("");
+
   const [isChangingPassword, setIsChangingPassword] = useState(false);
+
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: "",
+
     newPassword: "",
+
     confirmPassword: "",
   });
+
   const [passwordMessage, setPasswordMessage] = useState("");
 
   // Fetch user profile
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/users/profile",
+          `${import.meta.env.VITE_API_URL}/api/users/profile`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }
         );
+
         const data = await response.json();
+
         setProfile(data);
+
         setNewEmail(data.email);
       } catch (error) {
         console.error("Failed to fetch profile:", error);
@@ -44,22 +59,33 @@ export const Dashboard = () => {
   }, [token]);
 
   // Update profile
+
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
-      const response = await fetch("http://localhost:5000/api/users/settings", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ email: newEmail }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/users/settings`,
+        {
+          method: "PATCH",
+
+          headers: {
+            "Content-Type": "application/json",
+
+            Authorization: `Bearer ${token}`,
+          },
+
+          body: JSON.stringify({ email: newEmail }),
+        }
+      );
 
       const data = await response.json();
+
       if (response.ok) {
         setProfile({ ...profile!, email: newEmail });
+
         setMessage("Profile updated successfully!");
+
         setIsEditing(false);
       } else {
         setMessage(data.error);
@@ -70,39 +96,52 @@ export const Dashboard = () => {
   };
 
   // Handle password change
+
   const handlePasswordChange = async (e: React.FormEvent) => {
     e.preventDefault();
+
     setPasswordMessage("");
 
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
       setPasswordMessage("New passwords do not match");
+
       return;
     }
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/auth/change-password",
+        `${import.meta.env.VITE_API_URL}/api/auth/change-password`,
+
         {
           method: "POST",
+
           headers: {
             "Content-Type": "application/json",
+
             Authorization: `Bearer ${token}`,
           },
+
           body: JSON.stringify({
             currentPassword: passwordForm.currentPassword,
+
             newPassword: passwordForm.newPassword,
           }),
         }
       );
 
       const data = await response.json();
+
       if (response.ok) {
         setPasswordMessage("Password updated successfully!");
+
         setPasswordForm({
           currentPassword: "",
+
           newPassword: "",
+
           confirmPassword: "",
         });
+
         setIsChangingPassword(false);
       } else {
         setPasswordMessage(data.error);

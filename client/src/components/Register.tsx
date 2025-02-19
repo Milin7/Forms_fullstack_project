@@ -9,6 +9,7 @@ export const Register = () => {
   const [error, setError] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
+  console.log("From register", import.meta.env.VITE_API_URL);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,17 +23,20 @@ export const Register = () => {
 
     try {
       // Register user
-      const registerResponse = await fetch("http://localhost:5000/api/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-          role: "user", // Default role
-        }),
-      });
+      const registerResponse = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/users`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+            role: "user", // Default role
+          }),
+        }
+      );
 
       const registerData = await registerResponse.json();
 
@@ -42,7 +46,7 @@ export const Register = () => {
 
       // After successful registration, login
       const loginResponse = await fetch(
-        "http://localhost:5000/api/auth/login",
+        `${import.meta.env.VITE_API_URL}/api/auth/login`,
         {
           method: "POST",
           headers: {
