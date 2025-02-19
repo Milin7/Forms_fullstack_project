@@ -83,25 +83,6 @@ router.post(
   }
 );
 
-// Get active sessions
-router.get("/sessions", auth, async (req: AuthRequest, res): Promise<any> => {
-  try {
-    console.log("Fetching sessions for user:", req.user); // Log user info
-    const sessions = await Session.findAll({
-      where: {
-        userId: req.user?.id,
-        expiresAt: {
-          [Op.gt]: new Date(), // Only get non-expired sessions
-        },
-      },
-    });
-    res.json(sessions);
-  } catch (error) {
-    console.error("Session fetch error:", error); // Log the error
-    res.status(500).json({ error: "Failed to fetch sessions" });
-  }
-});
-
 // Change password route
 router.post(
   "/change-password",

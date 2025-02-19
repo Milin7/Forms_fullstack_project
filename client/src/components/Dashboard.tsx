@@ -7,8 +7,7 @@ interface UserProfile {
 }
 
 export const Dashboard = () => {
-  const { token, user } = useAuth();
-  const [sessions, setSessions] = useState([]);
+  const { token } = useAuth();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [newEmail, setNewEmail] = useState("");
@@ -20,26 +19,6 @@ export const Dashboard = () => {
     confirmPassword: "",
   });
   const [passwordMessage, setPasswordMessage] = useState("");
-
-  useEffect(() => {
-    const fetchSessions = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:5000/api/auth/sessions",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const data = await response.json();
-        setSessions(data);
-      } catch (error) {
-        console.error("Failed to fetch sessions:", error);
-      }
-    };
-    fetchSessions();
-  }, [token]);
 
   // Fetch user profile
   useEffect(() => {
