@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/Login";
 import { Register } from "./components/Register";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import Navigation from "./components/Navigation";
+import { Dashboard } from "./components/Dashboard";
 
 // Protected Route wrapper
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -21,7 +23,10 @@ function App() {
             path="/"
             element={
               <ProtectedRoute>
-                <div>Protected Home Page</div>
+                <>
+                  <Navigation />
+                  <Dashboard />
+                </>
               </ProtectedRoute>
             }
           />

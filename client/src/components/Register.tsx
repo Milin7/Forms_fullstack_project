@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Register = () => {
   const [email, setEmail] = useState("");
@@ -8,6 +8,7 @@ export const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,7 +40,7 @@ export const Register = () => {
         throw new Error(registerData.error || "Registration failed");
       }
 
-      // Automatically login after registration
+      // After successful registration, login
       const loginResponse = await fetch(
         "http://localhost:5000/api/auth/login",
         {
@@ -54,16 +55,21 @@ export const Register = () => {
       const loginData = await loginResponse.json();
 
       if (!loginResponse.ok) {
-        throw new Error(loginData.error || "Login failed");
+        throw new Error(loginData.error || "Auto-login failed");
       }
 
+      // Update auth context with token and user data
       login(loginData.token, loginData.user);
+
+      // Navigate to home page
+      navigate("/");
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
       } else {
         setError("An unknown error occurred");
       }
+      console.error("Registration/Login error:", err);
     }
   };
 
