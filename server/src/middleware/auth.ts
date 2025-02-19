@@ -6,6 +6,8 @@ export interface AuthRequest extends Request {
     id: number;
     email: string;
     role: string;
+    createdAt: Date;
+    updatedAt: Date;
   };
 }
 
@@ -24,6 +26,8 @@ export const auth = async (
       id: number;
       email: string;
       role: string;
+      createdAt: Date;
+      updatedAt: Date;
     };
     req.user = decoded;
     next();
@@ -31,3 +35,4 @@ export const auth = async (
     res.status(401).json({ error: "Authentication failed" });
   }
 };
+console.log(auth);
