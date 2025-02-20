@@ -12,9 +12,9 @@ const app = express();
 
 // CORS configuration
 const allowedOrigins = (
-  process.env.NODE_ENV === "development"
-    ? ["http://localhost:5173"]
-    : [process.env.PRODUCTION_URL]
+  process.env.NODE_ENV === "production"
+    ? [process.env.PRODUCTION_URL]
+    : ["http://localhost:5173"]
 ).filter((origin): origin is string => !!origin);
 
 app.use(
