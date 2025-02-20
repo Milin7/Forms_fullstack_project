@@ -11,9 +11,14 @@ dotenv.config();
 const app = express();
 
 // CORS configuration
+const allowedOrigins =
+  process.env.NODE_ENV === "development"
+    ? ["http://localhost:5173"]
+    : [process.env.PRODUCTION_URL];
+
 app.use(
   cors({
-    origin: [process.env.PRODUCTION_URL, "http://localhost:5173"],
+    origin: allowedOrigins,
     credentials: true,
   })
 );
