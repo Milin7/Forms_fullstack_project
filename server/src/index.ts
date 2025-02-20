@@ -11,10 +11,11 @@ dotenv.config();
 const app = express();
 
 // CORS configuration
-const allowedOrigins =
+const allowedOrigins = (
   process.env.NODE_ENV === "development"
     ? ["http://localhost:5173"]
-    : [process.env.PRODUCTION_URL];
+    : [process.env.PRODUCTION_URL]
+).filter((origin): origin is string => !!origin);
 
 app.use(
   cors({

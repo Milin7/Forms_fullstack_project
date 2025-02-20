@@ -141,6 +141,12 @@ router.post(
       const updatedUser = await User.findByPk(req.user?.id);
       const finalHash = updatedUser?.get("password");
 
+      if (!finalHash) {
+        return res
+          .status(400)
+          .json({ error: "Failed to verify password update" });
+      }
+
       console.log("Post-update verification:", {
         newPassword,
         finalHash,

@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 
 // Define User attributes interface
 interface UserAttributes {
-  id: number;
+  id?: number;
   email: string;
   password: string;
   role: "user" | "admin";
@@ -12,7 +12,10 @@ interface UserAttributes {
 
 // Define User model
 class User extends Model<UserAttributes> {
+  declare id: number;
+  declare email: string;
   declare password: string;
+  declare role: "user" | "admin";
 }
 
 User.init(

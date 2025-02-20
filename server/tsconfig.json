@@ -10,7 +10,12 @@
     "moduleResolution": "node", // How to resolve modules
 
     // Strict Type-Checking
-    "strict": false, // Enable all strict type checking options
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
 
     // Interop Constraints
     "esModuleInterop": true, // Enables CommonJS/AMD/UMD modules to be imported
