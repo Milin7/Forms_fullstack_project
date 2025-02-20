@@ -1,20 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-type RequestBody = Request["body"];
-type RequestParams = Request["params"];
-type RequestHeaders = Request["headers"];
-
-// Extend Request interface with explicit type declarations
 export interface AuthRequest extends Request {
   user?: {
     id: number;
     email: string;
     role: string;
   };
-  body: RequestBody;
-  params: RequestParams;
-  headers: RequestHeaders;
 }
 
 export const auth = async (
@@ -23,7 +15,7 @@ export const auth = async (
   next: NextFunction
 ) => {
   try {
-    const token = req.header("Authorization")?.replace("Bearer ", "");
+    const token = req.headers.authorization?.replace("Bearer ", "");
     if (!token) {
       throw new Error("No token provided");
     }
