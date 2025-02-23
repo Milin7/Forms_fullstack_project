@@ -1,5 +1,6 @@
 import { Model, DataTypes } from "sequelize";
 import sequelize from "../config/database";
+import type Question from "./Question";
 
 class Template extends Model {
   declare id: number;
@@ -7,6 +8,7 @@ class Template extends Model {
   declare description: string;
   declare isPublic: boolean;
   declare userId: number;
+  declare questions?: Question[];
 }
 
 Template.init(

@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { testConnection } from "./config/database.js";
 import { syncDatabase } from "./models";
+import { setupAssociations } from "./models/associations";
 import userRoutes from "./routes/users";
 import authRoutes from "./routes/auth";
 import templateRoutes from "./routes/templates";
@@ -31,9 +32,10 @@ app.get("/", (req, res) => {
   res.json({ message: "Server is running successfully!" });
 });
 
-// Initialize database
+// Initialize database and setup associations
 const initDatabase = async () => {
   await testConnection();
+  setupAssociations();
   await syncDatabase();
 };
 

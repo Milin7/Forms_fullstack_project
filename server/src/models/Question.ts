@@ -1,5 +1,6 @@
 import { Model, DataTypes } from "sequelize";
 import sequelize from "../config/database";
+import type Template from "./Template";
 
 class Question extends Model {
   declare id: number;
@@ -10,6 +11,7 @@ class Question extends Model {
   declare order: number;
   declare options: string[];
   declare templateId: number;
+  declare template?: Template;
 }
 
 Question.init(
